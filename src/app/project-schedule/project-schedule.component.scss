@@ -1,0 +1,10 @@
+@import "~src/variables";
+.icon-display {
+  transform: scale(1.5);
+  margin-right: 32px;
+}
+
+.tree-header{
+  margin: 0;
+  background-color: mat-color($app-accent, darker-contrast);
+}
