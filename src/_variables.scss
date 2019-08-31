@@ -1,21 +1,21 @@
 // Import material theming functions
 @import '~@angular/material/theming';
 
-$md-goldpalette: (
-  50 : #fef8e5,
-  100 : #fdeebd,
-  200 : #fce391,
-  300 : #fad865,
-  400 : #f9cf44,
-  500 : #f8c723,
-  600 : #f7c11f,
-  700 : #f6ba1a,
-  800 : #f5b315,
-  900 : #f3a60c,
+$md-primary-gold: (
+  50 : #fff4e1,
+  100 : #fee4b4,
+  200 : #fed282,
+  300 : #fec04f,
+  400 : #fdb32a,
+  500 : #fda504,
+  600 : #fd9d03,
+  700 : #fc9303,
+  800 : #fc8a02,
+  900 : #fc7901,
   A100 : #ffffff,
-  A200 : #fff7ea,
-  A400 : #ffe5b7,
-  A700 : #ffdc9d,
+  A200 : #fff6ef,
+  A400 : #ffd8bc,
+  A700 : #ffc9a2,
   contrast: (
     50 : #000000,
     100 : #000000,
@@ -34,7 +34,7 @@ $md-goldpalette: (
   )
 );
 
-$md-mcgpalette1: (
+$md-accent-violet: (
   50 : #f3eaec,
   100 : #e0cad1,
   200 : #cca6b2,
@@ -68,11 +68,15 @@ $md-mcgpalette1: (
 );
 
 // Copy the palettes from your selected theme (usually theme.scss).
-$app-primary: mat-palette($mat-purple, 700, 500, 800);
-$app-accent:  mat-palette($mat-green, A200, A100, A400);
+$app-primary: mat-palette($md-primary-gold);
+$app-accent:  mat-palette($md-accent-violet);
 $app-warn:    mat-palette($mat-red);
 
 // Create your Sass color vars (will be available in all the project)
 $primary: mat-color($app-primary);
 $accent: mat-color($app-accent);
 $warn: mat-color($app-warn);
+$theme: mat-dark-theme(mat-palette($md-primary-gold), mat-palette($md-accent-violet), $app-warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+$typo-config: mat-typography-config();

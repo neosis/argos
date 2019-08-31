@@ -55,7 +55,7 @@ const TREE_DATA = {
       },
       'steps': []
     }, {
-      'name': 'Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2Step 2.2',
+      'name': 'Step 2.2 lorem Step 2.2 lorem Step 2.2 lorem Step 2.2 lorem  Step 2.2 lorem',
       'progress': 0,
       'dates': {
         'start': start,

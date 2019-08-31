@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ScheduleDataService, ScheduleStep} from "../service/schedule-data.service";
 import * as Moment from 'moment';
 import {extendMoment} from "moment-range";
@@ -24,7 +24,8 @@ export class ScheduleStepFlat {
   selector: 'app-project-schedule',
   templateUrl: './project-schedule.component.html',
   styleUrls: ['./project-schedule.component.scss'],
-  providers: [ScheduleDataService]
+  providers: [ScheduleDataService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectScheduleComponent implements OnInit {
   moment = moment;
@@ -70,5 +71,9 @@ export class ProjectScheduleComponent implements OnInit {
   private _isExpandable = (node: ScheduleStepFlat) => node.expandable;
   private _getChildren = (node: ScheduleStep): Observable<ScheduleStep[]> => of(node.steps);
   hasChild = (_: number, _nodeData: ScheduleStepFlat) => _nodeData.expandable;
+  restrictMove: boolean = false;
 
+  log(x) {
+    console.log('dragEnd ', x.sizes, ' total > ', x.sizes.reduce((t, s) => t+s, 0))
+  }
 }

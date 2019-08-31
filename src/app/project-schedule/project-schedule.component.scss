@@ -5,6 +5,29 @@
 }
 
 .tree-header{
-  margin: 0;
-  background-color: mat-color($app-accent, darker-contrast);
+  font-size: mat-font-size($typo-config, title);
+  font-size: mat-font-weight($typo-config, title);
+  padding: 8px 0;
+}
+
+.mat-divider {
+  border-top-width: 1px;
+  border-top-color: mat-color($app-accent, lighter);
+}
+
+.container-column{
+  margin: 8px 0;
+}
+
+.container-row{
+  margin: 0 8px;
+}
+
+.mat-tree-padding {
+padding-right: 16px;
+  min-width: 25vw;
+}
+
+.split-row{
+  padding-right: 10px;
 }

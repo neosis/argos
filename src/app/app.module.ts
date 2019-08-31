@@ -8,6 +8,9 @@ import {AppMaterialModule} from "./app-material.module";
 import {HttpClientModule} from "@angular/common/http";
 import {IconService} from "./service/icon.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {SplitModule} from "../../split/split.module";
+
+
 
 @NgModule({
   declarations: [
@@ -19,7 +22,11 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     AppRoutingModule,
     AppMaterialModule,
     HttpClientModule,
-    FlexLayoutModule
+    FlexLayoutModule.withConfig({
+      useColumnBasisZero: false,
+      printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
+    }),
+    SplitModule
   ],
   providers: [IconService],
   bootstrap: [AppComponent]
