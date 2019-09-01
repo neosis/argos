@@ -9,6 +9,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {IconService} from "./service/icon.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {SplitModule} from "../../split/split.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 
@@ -22,11 +24,11 @@ import {SplitModule} from "../../split/split.module";
     AppRoutingModule,
     AppMaterialModule,
     HttpClientModule,
-    FlexLayoutModule.withConfig({
-      useColumnBasisZero: false,
-      printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
-    }),
-    SplitModule
+    FlexLayoutModule,
+    SplitModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [IconService],
   bootstrap: [AppComponent]

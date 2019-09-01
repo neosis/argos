@@ -1,73 +1,10 @@
 // Import material theming functions
 @import '~@angular/material/theming';
-
-$md-primary-gold: (
-  50 : #fff4e1,
-  100 : #fee4b4,
-  200 : #fed282,
-  300 : #fec04f,
-  400 : #fdb32a,
-  500 : #fda504,
-  600 : #fd9d03,
-  700 : #fc9303,
-  800 : #fc8a02,
-  900 : #fc7901,
-  A100 : #ffffff,
-  A200 : #fff6ef,
-  A400 : #ffd8bc,
-  A700 : #ffc9a2,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #000000,
-    600 : #000000,
-    700 : #000000,
-    800 : #000000,
-    900 : #000000,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
-);
-
-$md-accent-violet: (
-  50 : #f3eaec,
-  100 : #e0cad1,
-  200 : #cca6b2,
-  300 : #b78293,
-  400 : #a7687b,
-  500 : #984d64,
-  600 : #90465c,
-  700 : #853d52,
-  800 : #7b3448,
-  900 : #6a2536,
-  A100 : #ffadc0,
-  A200 : #ff7a99,
-  A400 : #ff4773,
-  A700 : #ff2d5f,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #ffffff,
-  )
-);
+@import 'palette';
 
 // Copy the palettes from your selected theme (usually theme.scss).
+//$app-primary: mat-palette($md-dark-gray-blue-primary);
+//$app-accent:  mat-palette($md-dark-gray-yellow-accent);
 $app-primary: mat-palette($md-primary-gold);
 $app-accent:  mat-palette($md-accent-violet);
 $app-warn:    mat-palette($mat-red);
@@ -76,7 +13,7 @@ $app-warn:    mat-palette($mat-red);
 $primary: mat-color($app-primary);
 $accent: mat-color($app-accent);
 $warn: mat-color($app-warn);
-$theme: mat-dark-theme(mat-palette($md-primary-gold), mat-palette($md-accent-violet), $app-warn);
+$theme: mat-dark-theme($app-primary,$app-accent, $app-warn);
 $background: map-get($theme, background);
 $foreground: map-get($theme, foreground);
 $typo-config: mat-typography-config();

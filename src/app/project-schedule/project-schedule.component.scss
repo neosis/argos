@@ -4,15 +4,28 @@
   margin-right: 32px;
 }
 
+.icon-size{
+  font-size: 20px;
+}
 .tree-header{
   font-size: mat-font-size($typo-config, title);
-  font-size: mat-font-weight($typo-config, title);
+  font-weight: mat-font-weight($typo-config, title);
   padding: 8px 0;
+  min-height: 31px;
 }
 
 .mat-divider {
   border-top-width: 1px;
   border-top-color: mat-color($app-accent, lighter);
+}
+
+.mat-tree-node {
+  max-height: 20px;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: mat-color($background, 'background') !important;
 }
 
 .container-column{
@@ -28,6 +41,41 @@ padding-right: 16px;
   min-width: 25vw;
 }
 
-.split-row{
-  padding-right: 10px;
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+}
+
+$nodeWidth: 60px;
+$nodeHeight: 48px;
+$completeColor: #2196F3;
+$incompleteColor: #9E9E9E;
+$borderColor: #BDBDBD;
+$highlightBorderColor: #FF9800;
+
+.calendar-cell {
+  text-align: center;
+  line-height: $nodeHeight - 1px;
+  width: $nodeWidth - 2px;
+  height: $nodeHeight - 1px;
+  min-width: $nodeWidth - 2px;
+  min-height: $nodeHeight - 1px;
+  border-width: 0.5px 1px;
+  border-color: mat-color($background, 'background');
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+}
+
+.calendar-cell.current {
+  border-style: solid;
+  border-color: mat-color($app-primary, lighter);
+  border-width: 0.5px 5px;
+}
+.calendar-cell.current.aftercurrent {
+
+}
+.calendar-row {
+  overflow: unset; // allow the row to overflow
 }

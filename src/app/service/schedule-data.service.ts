@@ -1,70 +1,11 @@
 import {Injectable} from "@angular/core";
-import  * as Moment from 'moment';
-import { extendMoment } from 'moment-range';
+import * as Moment from 'moment';
+import {extendMoment} from 'moment-range';
 import {BehaviorSubject} from "rxjs";
 
 //TODO - Read this code
 const moment = extendMoment(Moment);
-const start = moment().format('YYYY-MM-DD');
-const end = moment().add(7, 'days').format('YYYY-MM-DD');
 
-const TREE_DATA = {
-  'name': 'New Project',
-  'progress': 0,
-  'dates': {
-    'start': start,
-    'end': end,
-  },
-  'steps': [{
-    'name': 'Step 1',
-    'progress': 0,
-    'dates': {
-      'start': start,
-      'end': end
-    },
-    'steps': [{
-      'name': 'Step 1.1',
-      'progress': 0,
-      'dates': {
-        'start': start,
-        'end': end
-      },
-      'steps': []
-    }, {
-      'name': 'Step 1.2',
-      'progress': 0,
-      'dates': {
-        'start': start,
-        'end': end
-      },
-      'steps': []
-    }]
-  }, {
-    'name': 'Step 2',
-    'progress': 0,
-    'dates': {
-      'start': start,
-      'end': end
-    },
-    'steps': [{
-      'name': 'Step 2.1',
-      'progress': 0,
-      'dates': {
-        'start': start,
-        'end': end
-      },
-      'steps': []
-    }, {
-      'name': 'Step 2.2 lorem Step 2.2 lorem Step 2.2 lorem Step 2.2 lorem  Step 2.2 lorem',
-      'progress': 0,
-      'dates': {
-        'start': start,
-        'end': end
-      },
-      'steps': []
-    }]
-  }]
-};
 export class ScheduleStep {
   name: string;
   progress: number;
@@ -82,34 +23,48 @@ export class ScheduleDataService {
   storageKey: 'ProjectScheduleData';
   moment = moment;
   dataChange = new BehaviorSubject<ScheduleStep>(null);
-  get data(): ScheduleStep { return this.dataChange.getValue() };
 
-  constructor(){
+  get data(): ScheduleStep {
+    return this.dataChange.getValue()
+  };
+
+  constructor() {
     //  TODO
     this.initialize();
     this.dataChange.asObservable().subscribe(val => this.saveStore(val));
   }
 
-  loadStore(){
+  loadStore() {
     return JSON.parse(localStorage.getItem(this.storageKey));
   }
 
-  saveStore(val){
+  saveStore(val) {
     localStorage.setItem(this.storageKey, JSON.stringify(val));
   }
 
-  initialize(){
+  initialize() {
     const store = this.loadStore();
-    if(store){
-      const tree =this.buildTree([store], 0);
+    if (store) {
+      const tree = this.buildTree([store], 0);
       this.dataChange.next(tree[0]);
     } else {
-      const tree = this.buildTree([TREE_DATA],0);
+      const start = moment().format('YYYY-MM-DD');
+      const end = moment().add(180, 'days').format('YYYY-MM-DD');
+      const root = {
+        'name': 'Project Name',
+        'progress': 0,
+        'dates': {
+          'start': start,
+          'end': end,
+        },
+        'steps': new Array<ScheduleStep>()
+      };
+      const tree = this.buildTree([root],0);
       this.dataChange.next(tree[0]);
     }
   }
 
-  private buildTree(steps: Array<any>, level: number) {
+  private buildTree(steps: Array<any>, level: number) : ScheduleStep[] {
     return steps.map((step: ScheduleStep) => {
       const newStep = new ScheduleStep();
       newStep.name = step.name;
@@ -120,8 +75,8 @@ export class ScheduleDataService {
       //Set progress dates
       newStep.progressDates = this.setProgressDates(step);
 
-      if(step.steps !== undefined && step.steps.length){
-        newStep.steps = this.buildTree(step.steps,level + 1);
+      if (step.steps !== undefined && step.steps.length) {
+        newStep.steps = this.buildTree(step.steps, level + 1);
       }
       return newStep;
     });
@@ -136,5 +91,46 @@ export class ScheduleDataService {
     const numDays = Math.round(Array.from(range.by('days')).length * step.progress / 100); // estimated completed days
     const totalDays = Array.from(range.by('days')).map(d => d.format('YYYY-MM-DD')); // all days in string array
     return totalDays.splice(0, numDays); // start from 0, get the first len days
+  }
+
+
+  updateScheduledStep(node: ScheduleStep, name: string) {
+    node.name = name;
+    //Dont rebuild tree
+    this.saveStore(this.data);
+  }
+
+  addScheduledStep(parent: ScheduleStep) {
+    parent.expanded = true;
+    const child = new ScheduleStep();
+    child.name = "New step";
+    child.progress = 0;
+    child.progressDates = [];
+    child.dates = {
+      start: parent.dates.start,
+      end: parent.dates.end
+    };
+    child.steps = [];
+    if(parent.steps !== undefined) {
+      parent.steps.push(child);
+    } else {
+      parent.steps = new Array<ScheduleStep>();
+      parent.steps.push(child);
+    }
+    this.dataChange.next(this.data);
+    console.log('Child added');
+  }
+
+  deleteScheduledStep(parent: ScheduleStep, child: ScheduleStep) {
+    const childIndex = parent.steps.indexOf(child);
+    parent.steps.splice(childIndex, 1);
+    this.dataChange.next(this.data);
+    console.log('child deleted');
+  }
+
+  toggleExpanded(node: ScheduleStep) {
+    node.expanded = !node.expanded;
+    this.saveStore(this.data);
+    console.log("Toggle data updated");
   }
 }
