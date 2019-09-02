@@ -1,0 +1,122 @@
+@import "~src/variables";
+.icon-display {
+  transform: scale(1.5);
+  margin-right: 32px;
+}
+
+.icon-size{
+  font-size: 20px;
+}
+.tree-header{
+  font-size: mat-font-size($typo-config, title);
+  font-weight: mat-font-weight($typo-config, title);
+  min-height: 32px;
+  max-height: 32px;
+}
+
+.mat-divider {
+  border-top-width: 1px;
+  border-top-color: mat-color($app-accent, lighter);
+}
+
+.mat-tree-node {
+  max-height: 20px;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: mat-color($background, 'background') !important;
+}
+
+.container-column{
+  margin: 8px 0;
+}
+
+.container-row{
+  margin: 0 8px;
+}
+
+.mat-tree-padding {
+padding-right: 16px;
+  min-width: 25vw;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+}
+
+$nodeWidth: 60px;
+$nodeHeight: 48px;
+$completeColor: #2196F3;
+$plannedColor: #f3ffe6;
+$borderColor: #BDBDBD;
+$highlightBorderColor: #FF9800;
+
+.calendar-cell {
+  text-align: center;
+  line-height: $nodeHeight - 1px;
+  width: $nodeWidth - 2px;
+  height: $nodeHeight - 1px;
+  min-width: $nodeWidth - 2px;
+  min-height: $nodeHeight - 1px;
+  border-width: 0.5px 1px;
+  border-color: mat-color($background, 'background');
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+}
+
+.calendar-cell.current {
+  border-style: solid;
+  border-color: mat-color($app-primary, lighter);
+  border-width: 0.5px 2px;
+}
+.calendar-cell[month-included=true][month-completed=false] {
+  background-color: mat-color($app-accent, lighter);
+}
+
+.calendar-cell[month-included=true][month-completed=true] {
+  background-color: darkgreen;
+}
+
+.date-form-field {
+  width: 100px;
+  border: none;
+}
+
+.calendar-cell-header {
+  text-align: center;
+  line-height: 32px;
+  width: $nodeWidth - 2px;
+  height: 32px;
+  min-width: $nodeWidth - 2px;
+  min-height: 31px;
+  border-width: 0.5px 1px;
+  border-color: mat-color($background, 'background');
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+}
+
+.progress {
+  margin: 10px;
+  width: 100%;
+  height: unset;
+}
+
+.slider-mat-tree-node {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.calendar-scroll {
+  height: fit-content;
+  overflow-x: auto;
+}
+
+.calendar-row{
+  overflow: unset; // allow the row to overflow
+}
