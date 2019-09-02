@@ -10,8 +10,8 @@
 .tree-header{
   font-size: mat-font-size($typo-config, title);
   font-weight: mat-font-weight($typo-config, title);
-  padding: 8px 0;
-  min-height: 31px;
+  min-height: 32px;
+  max-height: 32px;
 }
 
 .mat-divider {
@@ -50,7 +50,7 @@ padding-right: 16px;
 $nodeWidth: 60px;
 $nodeHeight: 48px;
 $completeColor: #2196F3;
-$incompleteColor: #9E9E9E;
+$plannedColor: #f3ffe6;
 $borderColor: #BDBDBD;
 $highlightBorderColor: #FF9800;
 
@@ -71,11 +71,52 @@ $highlightBorderColor: #FF9800;
 .calendar-cell.current {
   border-style: solid;
   border-color: mat-color($app-primary, lighter);
-  border-width: 0.5px 5px;
+  border-width: 0.5px 2px;
 }
-.calendar-cell.current.aftercurrent {
+.calendar-cell[month-included=true][month-completed=false] {
+  background-color: mat-color($app-accent, lighter);
+}
 
+.calendar-cell[month-included=true][month-completed=true] {
+  background-color: darkgreen;
 }
-.calendar-row {
+
+.date-form-field {
+  width: 100px;
+  border: none;
+}
+
+.calendar-cell-header {
+  text-align: center;
+  line-height: 32px;
+  width: $nodeWidth - 2px;
+  height: 32px;
+  min-width: $nodeWidth - 2px;
+  min-height: 31px;
+  border-width: 0.5px 1px;
+  border-color: mat-color($background, 'background');
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+}
+
+.progress {
+  margin: 10px;
+  width: 100%;
+  height: unset;
+}
+
+.slider-mat-tree-node {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.calendar-scroll {
+  height: fit-content;
+  overflow-x: auto;
+}
+
+.calendar-row{
   overflow: unset; // allow the row to overflow
 }

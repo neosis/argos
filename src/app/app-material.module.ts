@@ -1,15 +1,16 @@
 import {NgModule} from "@angular/core";
 import {
-  MatButtonModule,
+  MatButtonModule, MatDatepickerModule,
   MatDividerModule,
   MatFormFieldModule,
-  MatIconModule, MatInputModule,
+  MatIconModule, MatInputModule, MatSliderModule,
   MatToolbarModule,
   MatTreeModule
 } from "@angular/material";
+import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 @NgModule({
-  imports: [MatToolbarModule, MatIconModule, MatTreeModule, MatButtonModule, MatDividerModule, MatFormFieldModule, MatInputModule],
-  exports: [MatToolbarModule, MatIconModule, MatTreeModule, MatButtonModule, MatDividerModule, MatFormFieldModule, MatInputModule]
+  imports: [MatToolbarModule, MatIconModule, MatTreeModule, MatButtonModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,MatMomentDateModule, MatSliderModule],
+  exports: [MatToolbarModule, MatIconModule, MatTreeModule, MatButtonModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatMomentDateModule, MatSliderModule]
 })
 export class AppMaterialModule {}

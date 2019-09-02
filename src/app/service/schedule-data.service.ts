@@ -9,7 +9,7 @@ const moment = extendMoment(Moment);
 export class ScheduleStep {
   name: string;
   progress: number;
-  progressDates: string[];
+  progressMonths: string[];
   dates: {
     start: string;
     end: string;
@@ -59,12 +59,12 @@ export class ScheduleDataService {
         },
         'steps': new Array<ScheduleStep>()
       };
-      const tree = this.buildTree([root],0);
+      const tree = this.buildTree([root], 0);
       this.dataChange.next(tree[0]);
     }
   }
 
-  private buildTree(steps: Array<any>, level: number) : ScheduleStep[] {
+  private buildTree(steps: Array<any>, level: number): ScheduleStep[] {
     return steps.map((step: ScheduleStep) => {
       const newStep = new ScheduleStep();
       newStep.name = step.name;
@@ -73,7 +73,7 @@ export class ScheduleDataService {
       newStep.expanded = step.expanded !== undefined ? step.expanded : true;
 
       //Set progress dates
-      newStep.progressDates = this.setProgressDates(step);
+      newStep.progressMonths = this.setProgressMonths(step);
 
       if (step.steps !== undefined && step.steps.length) {
         newStep.steps = this.buildTree(step.steps, level + 1);
@@ -81,18 +81,6 @@ export class ScheduleDataService {
       return newStep;
     });
   }
-
-  private setProgressDates(step: ScheduleStep) {
-    //TODO: Study this code
-    const start = this.moment(step.dates.start);
-    const end = this.moment(step.dates.end);
-    const range = moment.range(start, end);
-
-    const numDays = Math.round(Array.from(range.by('days')).length * step.progress / 100); // estimated completed days
-    const totalDays = Array.from(range.by('days')).map(d => d.format('YYYY-MM-DD')); // all days in string array
-    return totalDays.splice(0, numDays); // start from 0, get the first len days
-  }
-
 
   updateScheduledStep(node: ScheduleStep, name: string) {
     node.name = name;
@@ -105,13 +93,13 @@ export class ScheduleDataService {
     const child = new ScheduleStep();
     child.name = "New step";
     child.progress = 0;
-    child.progressDates = [];
+    child.progressMonths = [];
     child.dates = {
       start: parent.dates.start,
       end: parent.dates.end
     };
     child.steps = [];
-    if(parent.steps !== undefined) {
+    if (parent.steps !== undefined) {
       parent.steps.push(child);
     } else {
       parent.steps = new Array<ScheduleStep>();
@@ -132,5 +120,30 @@ export class ScheduleDataService {
     node.expanded = !node.expanded;
     this.saveStore(this.data);
     console.log("Toggle data updated");
+  }
+
+  setProgressMonths(step: ScheduleStep) {
+    const start = moment(step.dates.start);
+    const end = moment(step.dates.end);
+    const range = moment.range(start, end);
+
+    const noOfMonthsCompleted = Math.round(Array.from(range.by('months')).length * step.progress / 100);
+    const totalDays = Array.from(range.by('months')).map(d => d.format("MMM YY"));
+    return totalDays.splice(0, noOfMonthsCompleted);
+  }
+
+  updateMonthRange(step: ScheduleStep) {
+    step.progressMonths = this.setProgressMonths(step);
+    this.saveStore(this.data);
+    console.log("Updated daterange");
+    return step.progressMonths;
+  }
+
+  updateProgress(step: ScheduleStep, progress: number) {
+    step.progress = progress;
+    step.progressMonths = this.setProgressMonths(step);
+    this.saveStore(this.data);
+    console.log("updated progress");
+    return step.progressMonths;
   }
 }

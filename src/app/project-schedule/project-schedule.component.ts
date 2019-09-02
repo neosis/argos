@@ -12,7 +12,7 @@ export class ScheduleStepFlat {
   constructor(
     public expandable: boolean, public level: number,
     public name: string, public progress: number,
-    public progressDates: string[],
+    public progressMonths: string[],
     public dates: {
       start: string;
       end: string;
@@ -31,18 +31,18 @@ export class ScheduleStepFlat {
 })
 export class ProjectScheduleComponent implements OnInit {
   moment = moment;
-  months: String[] = [];
+  months: any = [{}];
   today = moment().format("YYYY-MM-DD");
   treeControl: FlatTreeControl<ScheduleStepFlat>;
   treeFlattner: MatTreeFlattener<ScheduleStep, ScheduleStepFlat>;
   dataSource: MatTreeFlatDataSource<ScheduleStep, ScheduleStepFlat>;
   projectScheduleData: any;
   flatNodeMap: Map<ScheduleStepFlat, ScheduleStep>;
-
-  // nestedNodeMap: Map<ScheduleStep, ScheduleStepFlat> = new Map<ScheduleStep, ScheduleStepFlat>();
+  nestedNodeMap: Map<ScheduleStep, ScheduleStepFlat>;
 
   constructor(private scheduleDataService: ScheduleDataService) {
     this.flatNodeMap = new Map<ScheduleStepFlat, ScheduleStep>();
+    this.nestedNodeMap = new Map<ScheduleStep, ScheduleStepFlat>();
     this.treeFlattner = new MatTreeFlattener<ScheduleStep, ScheduleStepFlat>(
       this.transformer, this._getLevel, this._isExpandable, this._getChildren);
     this.treeControl = new FlatTreeControl<ScheduleStepFlat>(this._getLevel, this._isExpandable);
@@ -72,10 +72,10 @@ export class ProjectScheduleComponent implements OnInit {
 
   transformer = (node: ScheduleStep, level: number) => {
     const flatNode = new ScheduleStepFlat(
-      node.steps !== undefined, level, node.name, node.progress, node.progressDates, node.dates, node.expanded
+      node.steps !== undefined, level, node.name, node.progress, node.progressMonths, node.dates, node.expanded
     );
     this.flatNodeMap.set(flatNode, node);
-    // this.nestedNodeMap.set(node, flatNode);
+    this.nestedNodeMap.set(node, flatNode);
     return flatNode;
   };
 
@@ -139,12 +139,31 @@ export class ProjectScheduleComponent implements OnInit {
     const range = this.moment.range(start, end);
 
     const days = Array.from(range.by('days'));
-    const formattedMonths = days.map(d => d.format('MMM YY'));
-    this.months = formattedMonths.filter(ProjectScheduleComponent.onlyUnique);
+    const formattedMonths = days.map(d => {
+      const obj = {date: moment(d).startOf('month').format('YYYY-MM-DD'), month: d.format('MMM YY')}
+      return obj;
+    });
+    this.months = Array.from(new Set(formattedMonths.map(month => month.date))).map(id => {
+      return formattedMonths.find(month => month.date == id)
+    });
     console.log(this.months);
   }
 
-  static onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
+  updateDateRange(node: ScheduleStepFlat) {
+    node.dates.start = this.moment(node.dates.start).format("YYYY-MM-DD");
+    node.dates.end = this.moment(node.dates.end).format("YYYY-MM-DD");
+    const scheduledNode = this.flatNodeMap.get(node);
+    if (node.level === 0) {
+      this.buildCalendar(scheduledNode);
+    }
+
+    const newProgressMonths = this.scheduleDataService.updateMonthRange(scheduledNode);
+    node.progressMonths =newProgressMonths;
+  }
+
+  updateProgress(node: ScheduleStepFlat, progress: number) {
+    const scheduledStep = this.flatNodeMap.get(node);
+    const newProgressMonths = this.scheduleDataService.updateProgress(scheduledStep,progress);
+    node.progressMonths = newProgressMonths;
   }
 }
